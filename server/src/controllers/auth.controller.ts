@@ -5,7 +5,7 @@ import prisma from '../utils/prisma'
 import { generateToken } from '../utils/jwt'
 import {  ErrorResponse, SuccessResponse } from '../types/response'
 import { User } from '@prisma/client'
-
+import { sendSuccess, sendError } from '../utils/response'
 // Register a new user
 export const register = async (req: Request, res: Response) : Promise<Response | undefined> => {
 
@@ -19,11 +19,7 @@ export const register = async (req: Request, res: Response) : Promise<Response |
     })
     //if email is already in use, return error response
     if (existingUser) {
-      const errorResponse: ErrorResponse = {
-        success: false,
-        message: 'User already exists',
-      }
-      return res.status(400).json(errorResponse)
+      return sendError(res, 'User already exists', 400)
     }
 
     //hash password
@@ -49,11 +45,7 @@ export const register = async (req: Request, res: Response) : Promise<Response |
     //log error
     console.error('Error registering user:', error)
     //return error response
-    const errorResponse: ErrorResponse = {
-      success: false,
-      message: 'Internal server error',
-    }
-    return res.status(500).json(errorResponse)
+    return sendError(res, 'Internal server error', 500)
   }
 }
 
@@ -71,21 +63,13 @@ export const login = async (req: Request, res: Response) : Promise<Response | un
 
     //if user not found, return error response
     if (!user) {
-      const errorResponse: ErrorResponse = {
-        success: false,
-        message: 'Invalid credentials',
-      }
-      return res.status(401).json(errorResponse)
-    } 
+      return sendError(res, 'Invalid credentials', 401)
+    }   
 
     //check if password is valid
     const isPasswordValid = await bcrypt.compare(password, user.password)
     if (!isPasswordValid) {
-      const errorResponse: ErrorResponse = {
-        success: false,
-        message: 'Invalid credentials',
-      }
-      return res.status(401).json(errorResponse)
+      return sendError(res, 'Invalid credentials', 401)
     }
 
     //generate token
@@ -93,18 +77,9 @@ export const login = async (req: Request, res: Response) : Promise<Response | un
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV !== 'development', maxAge: 30 * 24 * 60 * 60 * 1000 })
 
     //return success response
-    const successResponse: SuccessResponse<User> = {
-      success: true,
-      message: 'User logged in successfully',
-      data: user,
-    }
-    return res.status(200).json(successResponse)
+    return sendSuccess(res, 'Login successful', user)
   } catch (error) {
     console.error('Error logging in:', error)
-    const errorResponse: ErrorResponse = {
-      success: false,
-      message: 'Internal server error',
-    }
-    return res.status(500).json(errorResponse)
+    return sendError(res, 'Internal server error', 500)
   }
 }
