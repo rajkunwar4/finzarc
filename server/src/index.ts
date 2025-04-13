@@ -2,26 +2,30 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser'
-import { PrismaClient } from '@prisma/client';
+import prisma from "./utils/prisma";
 import authRoutes from './routes/auth.route';
+import taskRoutes from './routes/task.route';
+
 
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient();
 const PORT = process.env.PORT || 5000;
 
- // Start of Selection
+ // Lib middlewares
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use(cookieParser());
 
-
+// Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/tasks', taskRoutes);
+
 app.use('/', (req, res)=>{
   res.send('Hello World');
 })
 
+// Start the server
 const start = async () => {
     try {
       await prisma.$connect();
