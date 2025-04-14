@@ -1,7 +1,10 @@
 {
-    "build": {
-      "env": {
-        "CI": "false"
-      }
+  "build": {
+    "env": {
+      "CI": "false"
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
