@@ -12,7 +12,7 @@ const TaskList = ({ tasks, onEdit, onDelete }: Props) => {
   if (!tasks || tasks.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-400">No tasks available</p>
+        <p className="text-gray-400">No tasks available :) </p>
       </div>
     );
   }
