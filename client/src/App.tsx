@@ -1,5 +1,5 @@
 // src/App.tsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Layout from './components/layout/Layout';
 import LoginPage from './pages/auth/LoginPage';
@@ -17,6 +17,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to="/tasks" />} />
           <Route path="/login" element={<PublicRoute children={<LoginPage />} />} />
           <Route path="/register" element={<PublicRoute children={<RegisterPage />} />} />
           <Route element={<ProtectedRoute children={<Layout />} />}>

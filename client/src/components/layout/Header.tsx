@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserCircleIcon, UserIcon } from '@heroicons/react/24/outline';
+import { UserCircleIcon, UserIcon, LogoutIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../hooks/useAuth';
 
 export const Header = () => {
@@ -35,8 +35,8 @@ export const Header = () => {
               
               {/* Profile Dropdown */}
               {isProfileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 rounded-lg bg-gray-800 py-2 shadow-xl ring-1 ring-black ring-opacity-5">
-                  <div className="px-4 py-2 border-b border-gray-700">
+                <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-32 rounded-lg bg-gray-800 py-2 shadow-xl border border-gray-700">
+                  <div className="px-4 py-2 border-b border-gray-700 text-center">
                     <p className="text-sm text-white">{user?.name}</p>
                     <p className="text-xs text-gray-400">{user?.email}</p>
                   </div>
@@ -45,10 +45,11 @@ export const Header = () => {
                     className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:text-teal-400 hover:bg-gray-700 transition-colors"
                   >
                     Logout
-                  </button>
+                  </button> 
                 </div>
               )}
             </div>
+            
           </div>
         </div>
       </nav>
