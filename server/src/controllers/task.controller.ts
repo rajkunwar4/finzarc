@@ -95,28 +95,30 @@ export const updateTask = async (req: Request, res: Response): Promise<Response>
     })
 
     if (!task) {
-      return sendError(res, 'Task not found', 404)
+      return sendError(res, 'Task not found', 404);
     }
+
+
+    const updatedData: any = {};
+    if (title !== undefined) updatedData.title = title;
+    if (description !== undefined) updatedData.description = description;
+    if (status !== undefined) updatedData.status = status;
+    if (priority !== undefined) updatedData.priority = priority;
+    if (dueDate !== undefined) updatedData.dueDate = dueDate ? new Date(dueDate) : undefined;
+    if (labels !== undefined) updatedData.labels = labels;
 
     const updatedTask = await prisma.task.update({
       where: { id },
-      data: {
-        title,
-        description,
-        status,
-        priority,
-        dueDate: dueDate ? new Date(dueDate) : undefined,
-        labels
-      },
+      data: updatedData,
       include: {
         subtasks: true
       }
-    })
+    });
 
-    return sendSuccess(res, 'Task updated successfully', updatedTask)
+    return sendSuccess(res, 'Task updated successfully', updatedTask);
   } catch (error) {
-    console.error('Error updating task:', error)
-    return sendError(res, 'Internal server error', 500)
+    console.error('Error updating task:', error);
+    return sendError(res, 'Internal server error', 500);
   }
 }
 

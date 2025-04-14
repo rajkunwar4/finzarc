@@ -3,8 +3,7 @@ import bcrypt from 'bcrypt'
 
 import prisma from '../utils/prisma'
 import { generateToken } from '../utils/jwt'
-import {  ErrorResponse, SuccessResponse } from '../types/response'
-import { User } from '@prisma/client'
+
 import { sendSuccess, sendError } from '../utils/response'
 // Register a new user
 export const register = async (req: Request, res: Response) : Promise<Response | undefined> => {
@@ -33,14 +32,10 @@ export const register = async (req: Request, res: Response) : Promise<Response |
     //generate token
     const token = generateToken({ id: user.id, email: user.email })
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV !== 'development', maxAge: 30 * 24 * 60 * 60 * 1000 })
+    
 
     //return success response
-    const successResponse: SuccessResponse<User> = {
-      success: true,
-      message: 'User registered successfully',
-      data: user,
-    }
-    return res.status(201).json(successResponse)
+    return sendSuccess(res, 'User registered successfully', { user, token })
   } catch (error) { 
     //log error
     console.error('Error registering user:', error)
@@ -76,8 +71,9 @@ export const login = async (req: Request, res: Response) : Promise<Response | un
     const token = generateToken({ id: user.id, email: user.email })
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV !== 'development', maxAge: 30 * 24 * 60 * 60 * 1000 })
 
+
     //return success response
-    return sendSuccess(res, 'Login successful', user)
+    return sendSuccess(res, 'Login successful', { user, token })
   } catch (error) {
     console.error('Error logging in:', error)
     return sendError(res, 'Internal server error', 500)
