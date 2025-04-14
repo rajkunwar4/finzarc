@@ -1,1 +1,13 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display&display=swap');
+
+html,
+body {
+  font-family: "SF Pro", sans-serif;
+  background-color: #1a202c;
+}
+
+.cursive{
+    font-family: "Dancing Script", cursive;
+}
