@@ -8,6 +8,7 @@ type Props = {
 }
 
 const TaskList = ({ tasks, onEdit, onDelete }: Props) => {
+  //if no tasks, return message
   if (!tasks || tasks.length === 0) {
     return (
       <div className="text-center py-8">
@@ -17,6 +18,7 @@ const TaskList = ({ tasks, onEdit, onDelete }: Props) => {
   }
 
   return (
+    //if tasks, return task cards
     <div className="space-y-4">
       {tasks.map((task) => (
         <TaskCard

@@ -79,6 +79,7 @@ export const TaskCard = ({ task, onEdit, onDelete }: Props) => {
               </select>
             </div>
 
+            {/* priority */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">Priority</label>
               <select
@@ -93,6 +94,7 @@ export const TaskCard = ({ task, onEdit, onDelete }: Props) => {
             </div>
           </div>
 
+          {/* due date */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">Due Date</label>
             <input
@@ -127,10 +129,10 @@ export const TaskCard = ({ task, onEdit, onDelete }: Props) => {
     <div className="bg-gray-700 rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-200">
       <div className="flex justify-between items-start">
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-white">{task.title}</h3>
-          <p className="text-gray-300">{task.description}</p>
+          <h3 className="text-lg font-light text-white">{task.title}</h3>
+          <p className="text-gray-300  font-light">{task.description}</p>
           
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
             <span className={`inline-block px-3 py-1 rounded-full text-sm ${statusColors[task.status]}`}>
               {task.status}
             </span>
@@ -138,7 +140,7 @@ export const TaskCard = ({ task, onEdit, onDelete }: Props) => {
               {task.priority}
             </span>
             {task.dueDate && (
-              <span className="inline-block px-3 py-1 rounded-full text-sm bg-teal-500/20 text-teal-400  border border-teal-400">
+              <span className="inline-block px-3 py-1 rounded-full text-sm font-light bg-violet-500/20 text-violet-400  border border-violet-400">
                 Due: {format(new Date(task.dueDate), 'MMM d, yyyy')}
               </span>
             )}
