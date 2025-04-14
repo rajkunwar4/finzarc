@@ -1,14 +1,13 @@
-
-import { RequestHandler, Router } from "express";
+import { Request, Response, Router, RequestHandler } from "express";
 
 import { register, login } from "../controllers/auth.controller";
 
 const router = Router();
 
 // Register a new user
-router.post('/register', register as RequestHandler);
+router.post('/register', (register as unknown as RequestHandler));
 
 // Login a user
-router.post('/login', login as RequestHandler);
+router.post('/login', (login as unknown as RequestHandler));
 
 export default router;
