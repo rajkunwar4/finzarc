@@ -1,9 +1,8 @@
-import { Request, Response } from 'express'
-import prisma from '../utils/prisma'
-import { sendSuccess, sendError } from '../utils/response'
+import prisma from '../utils/prisma.js'
+import { sendSuccess, sendError } from '../utils/response.js'
 
 // Create a new subtask
-export const createSubtask = async (req: Request, res: Response): Promise<Response> => {
+export const createSubtask = async (req, res) => {
   const { taskId, title } = req.body
   const userId = req.user?.id
 
@@ -35,7 +34,7 @@ export const createSubtask = async (req: Request, res: Response): Promise<Respon
 }
 
 // Update a subtask
-export const updateSubtask = async (req: Request, res: Response): Promise<Response> => {
+export const updateSubtask = async (req, res) => {
   const { id } = req.params
   const { title, completed } = req.body
   const userId = req.user?.id
@@ -71,7 +70,7 @@ export const updateSubtask = async (req: Request, res: Response): Promise<Respon
 }
 
 // Delete a subtask
-export const deleteSubtask = async (req: Request, res: Response): Promise<Response> => {
+export const deleteSubtask = async (req, res) => {
   const { id } = req.params
   const userId = req.user?.id
 
@@ -102,7 +101,7 @@ export const deleteSubtask = async (req: Request, res: Response): Promise<Respon
 }
 
 // Toggle subtask completion
-export const toggleSubtask = async (req: Request, res: Response): Promise<Response> => {
+export const toggleSubtask = async (req, res) => {
   const { id } = req.params
   const userId = req.user?.id
 

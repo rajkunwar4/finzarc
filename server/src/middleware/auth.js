@@ -1,32 +1,18 @@
-import { Request, Response, NextFunction } from 'express'
-import { verifyToken } from '../utils/jwt'
-import prisma from '../utils/prisma'
-import { ErrorResponse } from '../types/response'
-
-// Extend Express Request type to include user
-declare global {
-  namespace Express {
-    interface Request {
-      user?: {
-        id: string
-        email: string
-      }
-    }
-  }
-}
+import { verifyToken } from '../utils/jwt.js'
+import prisma from '../utils/prisma.js'
 
 // Middleware to protect routes that require authentication
 export const auth = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void | Response> => {
+  req,
+  res,
+  next
+) => {
   try {
     // Get token from cookies
     const token = req.cookies.token
 
     if (!token) {
-      const errorResponse: ErrorResponse = {
+      const errorResponse = {
         success: false,
         message: 'Not authorized to access this route',
       }
@@ -43,7 +29,7 @@ export const auth = async (
     })
 
     if (!user) {
-      const errorResponse: ErrorResponse = {
+      const errorResponse = {
         success: false,
         message: 'User no longer exists',
       }
@@ -59,7 +45,7 @@ export const auth = async (
     }
     next()
   } catch (error) {
-    const errorResponse: ErrorResponse = {
+    const errorResponse = {
       success: false,
       message: 'Not authorized to access this route',
     }

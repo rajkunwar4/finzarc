@@ -1,12 +1,11 @@
-import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 
-import prisma from '../utils/prisma'
-import { generateToken } from '../utils/jwt'
+import prisma from '../utils/prisma.js'
+import { generateToken } from '../utils/jwt.js'
 
-import { sendSuccess, sendError } from '../utils/response'
+import { sendSuccess, sendError } from '../utils/response.js'
 // Register a new user
-export const register = async (req: Request, res: Response) : Promise<Response | undefined> => {
+export const register = async (req, res) => {
 
   //get email, password, name from request body
   const { email, password, name } = req.body
@@ -31,7 +30,13 @@ export const register = async (req: Request, res: Response) : Promise<Response |
 
     //generate token
     const token = generateToken({ id: user.id, email: user.email })
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV !== 'development', maxAge: 30 * 24 * 60 * 60 * 1000 })
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
+      sameSite: process.env.NODE_ENV !== 'development' ? 'None' : 'Lax',
+      maxAge: 30 * 24 * 60 * 60 * 1000
+    });
+    
     
 
     //return success response
@@ -45,7 +50,7 @@ export const register = async (req: Request, res: Response) : Promise<Response |
 }
 
 // Login a user
-export const login = async (req: Request, res: Response) : Promise<Response | undefined> => {
+export const login = async (req, res) => {
 
   //get email, password from request body
   const { email, password } = req.body
@@ -69,7 +74,13 @@ export const login = async (req: Request, res: Response) : Promise<Response | un
 
     //generate token
     const token = generateToken({ id: user.id, email: user.email })
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV !== 'development', maxAge: 30 * 24 * 60 * 60 * 1000 })
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
+      sameSite: process.env.NODE_ENV !== 'development' ? 'None' : 'Lax',
+      maxAge: 30 * 24 * 60 * 60 * 1000
+    });
+    
 
 
     //return success response

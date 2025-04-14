@@ -1,9 +1,8 @@
-import { Request, Response } from 'express'
-import prisma from '../utils/prisma'
-import { sendSuccess, sendError } from '../utils/response'
+import prisma from '../utils/prisma.js'
+import { sendSuccess, sendError } from '../utils/response.js'
 
 // Create a new task
-export const createTask = async (req: Request, res: Response): Promise<Response> => {
+export const createTask = async (req, res) => {
   const { title, description, status, priority, dueDate, labels } = req.body
   const userId = req.user?.id
 
@@ -35,7 +34,7 @@ export const createTask = async (req: Request, res: Response): Promise<Response>
 }
 
 // Get all tasks for a user
-export const getTasks = async (req: Request, res: Response): Promise<Response> => {
+export const getTasks = async (req, res) => {
   const userId = req.user?.id
   
   try {
@@ -54,7 +53,7 @@ export const getTasks = async (req: Request, res: Response): Promise<Response> =
 }
 
 // Get a single task by ID
-export const getTaskById = async (req: Request, res: Response): Promise<Response> => {
+export const getTaskById = async (req, res) => {
   const { id } = req.params
   const userId = req.user?.id
 
@@ -81,7 +80,7 @@ export const getTaskById = async (req: Request, res: Response): Promise<Response
 }
 
 // Update a task
-export const updateTask = async (req: Request, res: Response): Promise<Response> => {
+export const updateTask = async (req, res) => {
   const { id } = req.params
   const userId = req.user?.id
   const { title, description, status, priority, dueDate, labels } = req.body
@@ -99,7 +98,7 @@ export const updateTask = async (req: Request, res: Response): Promise<Response>
     }
 
 
-    const updatedData: any = {};
+    const updatedData = {};
     if (title !== undefined) updatedData.title = title;
     if (description !== undefined) updatedData.description = description;
     if (status !== undefined) updatedData.status = status;
@@ -123,7 +122,7 @@ export const updateTask = async (req: Request, res: Response): Promise<Response>
 }
 
 // Delete a task
-export const deleteTask = async (req: Request, res: Response): Promise<Response> => {
+export const deleteTask = async (req, res) => {
   const { id } = req.params
   const userId = req.user?.id
 
