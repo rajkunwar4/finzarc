@@ -3,14 +3,13 @@ import { authApi } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-
 export const useAuth = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     // Initialize with current auth state
     const token = localStorage.getItem('token');
-    return !!token;
+    return token;
   });
 
   // Verify token validity
