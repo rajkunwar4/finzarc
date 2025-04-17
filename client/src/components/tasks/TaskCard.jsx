@@ -3,7 +3,10 @@ import { format } from "date-fns";
 
 
 export const TaskCard = ({ task, onEdit, onDelete }) => {
+  //state for editing
   const [isEditing, setIsEditing] = useState(false);
+
+  //state for edited task
   const [editedTask, setEditedTask] = useState(task);
 
   //status colors
@@ -28,9 +31,9 @@ export const TaskCard = ({ task, onEdit, onDelete }) => {
       status: editedTask.status,
       priority: editedTask.priority,
       dueDate: editedTask.dueDate ? new Date(editedTask.dueDate) : null,
-      labels: editedTask.labels // Include labels if needed
+      labels: editedTask.labels 
     };
-    onEdit(task.id, updatedTask); // Ensure task.id and updatedTask are passed correctly
+    onEdit(task.id, updatedTask); 
     setIsEditing(false);
   };
 
@@ -39,6 +42,7 @@ export const TaskCard = ({ task, onEdit, onDelete }) => {
     return (
       <div className="bg-gray-700 rounded-lg p-4 shadow-lg">
         <div className="space-y-4">
+          {/* title */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">Title</label>
             <input
@@ -48,7 +52,8 @@ export const TaskCard = ({ task, onEdit, onDelete }) => {
               className="w-full bg-gray-600 text-white rounded px-3 py-2"
             />
           </div>
-          
+
+          {/* description */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
             <textarea
@@ -59,6 +64,7 @@ export const TaskCard = ({ task, onEdit, onDelete }) => {
             />
           </div>
 
+          {/* status */}      
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">Status</label>
@@ -99,6 +105,7 @@ export const TaskCard = ({ task, onEdit, onDelete }) => {
             />
           </div>
 
+          {/* save button */}
           <div className="flex justify-end space-x-2 mt-4">
             <button
               onClick={() => setIsEditing(false)}
@@ -123,9 +130,11 @@ export const TaskCard = ({ task, onEdit, onDelete }) => {
     <div className="bg-gray-700 rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-200">
       <div className="flex justify-between items-start">
         <div className="space-y-2">
+          {/* title */}
           <h3 className="text-lg font-light text-white">{task.title}</h3>
+          {/* description */}
           <p className="text-gray-300  font-light">{task.description}</p>
-          
+          {/* status and priority */}
           <div className="flex flex-wrap gap-2 items-center">
             <span className={`inline-block px-3 py-1 rounded-full text-sm ${statusColors[task.status]}`}>
               {task.status}
@@ -133,6 +142,7 @@ export const TaskCard = ({ task, onEdit, onDelete }) => {
             <span className={`inline-block px-3 py-1 rounded-full text-sm ${priorityColors[task.priority]}`}>
               {task.priority}
             </span>
+            {/* due date */}
             {task.dueDate && (
               <span className="inline-block px-3 py-1 rounded-full text-sm font-light bg-violet-500/20 text-violet-400  border border-violet-400">
                 Due: {format(new Date(task.dueDate), 'MMM d, yyyy')}
@@ -141,7 +151,9 @@ export const TaskCard = ({ task, onEdit, onDelete }) => {
           </div>
         </div>
         
+        {/* edit and delete buttons */}
         <div className="flex space-x-2">
+          {/* edit button */}
           <button
             onClick={() => setIsEditing(true)}
             className="p-2 text-gray-400 hover:text-teal-400 transition-colors"
@@ -151,6 +163,7 @@ export const TaskCard = ({ task, onEdit, onDelete }) => {
                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
           </button>
+          {/* delete button */}
           <button
             onClick={() => onDelete(task.id)}
             className="p-2 text-gray-400 hover:text-red-400 transition-colors"

@@ -4,8 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 export const useAuth = () => {
+
+  //to manipulate react query's cache
   const queryClient = useQueryClient();
+
+  // hook to navigate to routes
   const navigate = useNavigate();
+
+  //state for handling authentication
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     // Initialize with current auth state
     const token = localStorage.getItem('token');
@@ -21,9 +27,13 @@ export const useAuth = () => {
       setIsAuthenticated(false);
       return false;
     }
-    
+    console.log("user", user)
+    console.log("token", token)
+
+
+
     try {
-      // Basic token validation (you can add more robust validation)
+      // Basic token validation
       const parsedUser = JSON.parse(user);
       if (!parsedUser) {
         throw new Error('Invalid user data');
@@ -77,6 +87,7 @@ export const useAuth = () => {
     }
   });
 
+  //Handle logout by clearing localStorage
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -90,12 +101,12 @@ export const useAuth = () => {
     navigate('/login');
   };
 
-  const user = localStorage.getItem('user');
-  const parsedUser = JSON.parse(user);
+  const user = JSON.parse(localStorage.getItem('user'));
+ 
 
   // Verify auth on mount and when isAuthenticated changes
   useEffect(() => {
-    verifyAuth();
+    verifyAuth(); 
   }, []);
 
   return {
@@ -105,6 +116,6 @@ export const useAuth = () => {
     isLoading: loginMutation.isPending || registerMutation.isPending,
     isAuthenticated,
     error: loginMutation.error || registerMutation.error,
-    user: parsedUser
+    user
   };
 };

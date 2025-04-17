@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   const { login, isLoading, error } = useAuth();
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   // Handle input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -34,8 +34,12 @@ const LoginPage = () => {
         <div className="bg-gray-800 rounded-xl shadow-xl p-6">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
+              {/* email */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-300 mb-1"
+                >
                   Email address
                 </label>
                 <input
@@ -49,8 +53,12 @@ const LoginPage = () => {
                   onChange={handleChange}
                 />
               </div>
+              {/* password */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-300 mb-1"
+                >
                   Password
                 </label>
                 <input
@@ -66,12 +74,14 @@ const LoginPage = () => {
               </div>
             </div>
 
+            {/* error message */}
             {error && (
               <div className="text-red-400 text-sm text-center bg-red-500/20 py-2 px-4 rounded-lg border border-red-400">
-                {error instanceof Error ? error.message : 'An error occurred'}
+                {error instanceof Error ? error.message : "An error occurred"}
               </div>
             )}
 
+            {/* sign in button */}
             <div>
               <button
                 type="submit"
@@ -79,15 +89,19 @@ const LoginPage = () => {
                 className="w-full px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white rounded-lg 
                          border border-teal-900 shadow-lg transition-all duration-200 disabled:opacity-50 text-sm font-light"
               >
-                {isLoading ? 'Signing in...' : 'Sign in'}
+                {isLoading ? "Signing in..." : "Sign in"}
               </button>
             </div>
           </form>
 
+          {/* register link */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-400">
-              Don't have an account?{' '}
-              <Link to="/register" className="font-medium text-teal-400 hover:text-teal-300 transition-colors">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="font-medium text-teal-400 hover:text-teal-300 transition-colors"
+              >
                 Register here
               </Link>
             </p>

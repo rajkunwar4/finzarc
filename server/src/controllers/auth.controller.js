@@ -37,10 +37,11 @@ export const register = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000
     });
     
+    const  { password: userPassword, ...userWithoutPasword} = user;
     
 
     //return success response
-    return sendSuccess(res, 'User registered successfully', { user, token })
+    return sendSuccess(res, 'User registered successfully', { user:userWithoutPasword, token })
   } catch (error) { 
     //log error
     console.error('Error registering user:', error)
@@ -54,6 +55,8 @@ export const login = async (req, res) => {
 
   //get email, password from request body
   const { email, password } = req.body
+
+  console.log("server pass",password)
 
   try {
     //find user by email
@@ -80,11 +83,17 @@ export const login = async (req, res) => {
       sameSite: process.env.NODE_ENV !== 'development' ? 'None' : 'Lax',
       maxAge: 30 * 24 * 60 * 60 * 1000
     });
+
+   
+    
+    console.log("user", user)
+
+    const { password: userPassword, ...userWithoutPassword } = user;
+        
     
 
-
     //return success response
-    return sendSuccess(res, 'Login successful', { user, token })
+    return sendSuccess(res, 'Login successful', { user: userWithoutPassword, token })
   } catch (error) {
     console.error('Error logging in:', error)
     return sendError(res, 'Internal server error', 500)

@@ -2,10 +2,13 @@ import { useState } from "react";
 import TaskList from "../../components/tasks/TaskList";
 import { useTasks } from "../../hooks/useTask";
 
-
 export const TasksPage = () => {
+  //to manipulate react query's cache
   const { tasks, isLoading, createTask, updateTask, deleteTask } = useTasks();
+
+  //state for creating task
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
   // create task
   const [newTask, setNewTask] = useState({
     title: "",
@@ -15,30 +18,38 @@ export const TasksPage = () => {
     labels: [],
   });
 
+  //state for active status
   const [activeStatus, setActiveStatus] = useState("ALL");
-  const [sortBy, setSortBy] = useState(
-    "createdAt"
-  );
+
+  //state for sort by
+  const [sortBy, setSortBy] = useState("createdAt");
 
   // Filter and sort tasks
   const filteredAndSortedTasks = tasks?.data
-    ?.filter((task) => activeStatus === "ALL" || task.status === activeStatus)
-    ?.sort((a, b) => {
-      switch (sortBy) {
-        case "dueDate":
-          if (!a.dueDate) return 1;
-          if (!b.dueDate) return -1;
-          return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-        case "priority": {
-          const priorityWeight = { HIGH: 3, MEDIUM: 2, LOW: 1 };
-          return priorityWeight[b.priority] - priorityWeight[a.priority];
-        }
-        default: // createdAt
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-      }
-    });
+  ?.filter(({ status }) => activeStatus === "ALL" || status === activeStatus)
+  ?.sort((a, b) => {
+
+    //get time
+    const getTime = (date) => new Date(date).getTime();
+
+    //priority weight
+    const priorityWeight = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+
+    // sort by due date
+    if (sortBy === "dueDate") {
+      if (!a.dueDate) return 1;
+      if (!b.dueDate) return -1;
+      return getTime(a.dueDate) - getTime(b.dueDate);
+    }
+
+    if (sortBy === "priority") {
+      return (priorityWeight[b.priority] || 0) - (priorityWeight[a.priority] || 0);
+    }
+
+    // sort by created at
+    return getTime(b.createdAt) - getTime(a.createdAt);
+  });
+
 
   //create task
   const handleCreateTask = async () => {
@@ -85,22 +96,24 @@ export const TasksPage = () => {
               <span className="text-sm font-light">Add Task</span>
             </button>
 
-                      {/* Status filter tabs */}
-          <div className="flex gap-2 bg-gray-800 p-1 rounded-full text-sm">
-            {["ALL", "TODO", "IN_PROGRESS", "COMPLETED"].map((status) => (
-              <button
-                key={status}
-                onClick={() => setActiveStatus(status)}
-                className={`flex-1 px-2 py-1  rounded-full transition-all duration-200  ${
-                  activeStatus === status
-                    ? "bg-teal-600 text-white rounded-full"
-                    : "text-gray-400 hover:text-white"
-                }`}
-              >
-                <span className="text-xs font-light whitespace-nowrap">{status.replace("_", " ")}</span>
-              </button>
-            ))}
-          </div>
+            {/* Status filter tabs */}
+            <div className="flex gap-2 bg-gray-800 p-1 rounded-full text-sm">
+              {["ALL", "TODO", "IN_PROGRESS", "COMPLETED"].map((status) => (
+                <button
+                  key={status}
+                  onClick={() => setActiveStatus(status)}
+                  className={`flex-1 px-2 py-1  rounded-full transition-all duration-200  ${
+                    activeStatus === status
+                      ? "bg-teal-600 text-white rounded-full"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  <span className="text-xs font-light whitespace-nowrap">
+                    {status.replace("_", " ")}
+                  </span>
+                </button>
+              ))}
+            </div>
 
             {/* sort by */}
             <div>
@@ -115,8 +128,6 @@ export const TasksPage = () => {
               </select>
             </div>
           </div>
-
-
         </div>
 
         {/* Main Content */}
@@ -141,6 +152,8 @@ export const TasksPage = () => {
               <h2 className="text-2xl font-bold text-white mb-4">
                 Create New Task
               </h2>
+
+              {/* title */}
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -156,6 +169,7 @@ export const TasksPage = () => {
                   />
                 </div>
 
+                {/* description */}
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Description
@@ -170,6 +184,7 @@ export const TasksPage = () => {
                   />
                 </div>
 
+                {/* status */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -191,6 +206,7 @@ export const TasksPage = () => {
                     </select>
                   </div>
 
+                  {/* priority */}
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">
                       Priority
@@ -212,6 +228,7 @@ export const TasksPage = () => {
                   </div>
                 </div>
 
+                {/* due date */}
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Due Date
@@ -225,6 +242,7 @@ export const TasksPage = () => {
                   />
                 </div>
 
+                {/* create task button */}
                 <div className="flex justify-end space-x-3 mt-6">
                   <button
                     onClick={() => setIsCreateModalOpen(false)}
