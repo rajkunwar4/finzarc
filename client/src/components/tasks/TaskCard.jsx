@@ -1,14 +1,8 @@
 import { useState } from "react";
-import { Task, TaskStatus, TaskPriority } from "../../types/task";
 import { format } from "date-fns";
 
-type Props = {
-  task: Task;
-  onEdit: (taskId: string, task: Task) => void;
-  onDelete: (taskId: string) => void;
-};
 
-export const TaskCard = ({ task, onEdit, onDelete }: Props) => {
+export const TaskCard = ({ task, onEdit, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
 
@@ -31,8 +25,8 @@ export const TaskCard = ({ task, onEdit, onDelete }: Props) => {
     const updatedTask = {
       title: editedTask.title,
       description: editedTask.description,
-      status: editedTask.status as TaskStatus,
-      priority: editedTask.priority as TaskPriority,
+      status: editedTask.status,
+      priority: editedTask.priority,
       dueDate: editedTask.dueDate ? new Date(editedTask.dueDate) : null,
       labels: editedTask.labels // Include labels if needed
     };
@@ -70,7 +64,7 @@ export const TaskCard = ({ task, onEdit, onDelete }: Props) => {
               <label className="block text-sm font-medium text-gray-300 mb-1">Status</label>
               <select
                 value={editedTask.status}
-                onChange={(e) => setEditedTask({ ...editedTask, status: e.target.value as TaskStatus })}
+                onChange={(e) => setEditedTask({ ...editedTask, status: e.target.value })}
                 className="w-full bg-gray-600 text-white rounded px-3 py-2"
               >
                 <option value="TODO">Todo</option>
@@ -84,7 +78,7 @@ export const TaskCard = ({ task, onEdit, onDelete }: Props) => {
               <label className="block text-sm font-medium text-gray-300 mb-1">Priority</label>
               <select
                 value={editedTask.priority}
-                onChange={(e) => setEditedTask({ ...editedTask, priority: e.target.value as TaskPriority })}
+                onChange={(e) => setEditedTask({ ...editedTask, priority: e.target.value  })}
                 className="w-full bg-gray-600 text-white rounded px-3 py-2"
               >
                 <option value="LOW">Low</option>

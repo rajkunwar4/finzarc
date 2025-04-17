@@ -1,18 +1,13 @@
 import { useState } from "react";
 import TaskList from "../../components/tasks/TaskList";
 import { useTasks } from "../../hooks/useTask";
-import {
-  CreateTaskData,
-  Task,
-  TaskStatus,
-  TaskPriority,
-} from "../../types/task";
+
 
 export const TasksPage = () => {
   const { tasks, isLoading, createTask, updateTask, deleteTask } = useTasks();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   // create task
-  const [newTask, setNewTask] = useState<CreateTaskData>({
+  const [newTask, setNewTask] = useState({
     title: "",
     description: "",
     status: "TODO",
@@ -20,8 +15,8 @@ export const TasksPage = () => {
     labels: [],
   });
 
-  const [activeStatus, setActiveStatus] = useState<TaskStatus | "ALL">("ALL");
-  const [sortBy, setSortBy] = useState<"createdAt" | "dueDate" | "priority">(
+  const [activeStatus, setActiveStatus] = useState("ALL");
+  const [sortBy, setSortBy] = useState(
     "createdAt"
   );
 
@@ -57,7 +52,7 @@ export const TasksPage = () => {
   };
 
   //delete task
-  const handleDeleteTask = async (taskId: string) => {
+  const handleDeleteTask = async (taskId) => {
     try {
       deleteTask(taskId);
     } catch (error) {
@@ -66,7 +61,7 @@ export const TasksPage = () => {
   };
 
   //edit task
-  const handleEditTask = async (taskId: string, updatedTask: Task) => {
+  const handleEditTask = async (taskId, updatedTask) => {
     try {
       console.log("updatedTask", updatedTask);
       updateTask({ id: taskId, updatedTask }); // Ensure this function is defined to call the API
@@ -95,7 +90,7 @@ export const TasksPage = () => {
             {["ALL", "TODO", "IN_PROGRESS", "COMPLETED"].map((status) => (
               <button
                 key={status}
-                onClick={() => setActiveStatus(status as TaskStatus | "ALL")}
+                onClick={() => setActiveStatus(status)}
                 className={`flex-1 px-2 py-1  rounded-full transition-all duration-200  ${
                   activeStatus === status
                     ? "bg-teal-600 text-white rounded-full"
@@ -111,7 +106,7 @@ export const TasksPage = () => {
             <div>
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                onChange={(e) => setSortBy(e.target.value)}
                 className="w-full text-sm font-light bg-gray-700 text-white rounded-lg px-2 py-2 focus:ring-2 focus:ring-teal-500"
               >
                 <option value="createdAt">Created At</option>
@@ -185,7 +180,7 @@ export const TasksPage = () => {
                       onChange={(e) =>
                         setNewTask({
                           ...newTask,
-                          status: e.target.value as TaskStatus,
+                          status: e.target.value,
                         })
                       }
                       className="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-teal-500"
@@ -205,7 +200,7 @@ export const TasksPage = () => {
                       onChange={(e) =>
                         setNewTask({
                           ...newTask,
-                          priority: e.target.value as TaskPriority,
+                          priority: e.target.value,
                         })
                       }
                       className="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-teal-500"
