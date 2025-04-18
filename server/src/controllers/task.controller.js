@@ -21,9 +21,6 @@ export const createTask = async (req, res) => {
         labels,
         userId
       },
-      include: {
-        subtasks: true
-      }
     })
 
     return sendSuccess(res, 'Task created successfully', task)
@@ -40,9 +37,6 @@ export const getTasks = async (req, res) => {
   try {
     const tasks = await prisma.task.findMany({
       where: { userId },
-      include: {
-        subtasks: true
-      }
     })
 
     return sendSuccess(res, 'Tasks retrieved successfully', tasks)
@@ -63,9 +57,6 @@ export const getTaskById = async (req, res) => {
         id,
         userId
       },
-      include: {
-        subtasks: true
-      }
     })
 
     if (!task) {
@@ -109,9 +100,6 @@ export const updateTask = async (req, res) => {
     const updatedTask = await prisma.task.update({
       where: { id },
       data: updatedData,
-      include: {
-        subtasks: true
-      }
     });
 
     return sendSuccess(res, 'Task updated successfully', updatedTask);

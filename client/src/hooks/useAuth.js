@@ -27,10 +27,6 @@ export const useAuth = () => {
       setIsAuthenticated(false);
       return false;
     }
-    console.log("user", user)
-    console.log("token", token)
-
-
 
     try {
       // Basic token validation
